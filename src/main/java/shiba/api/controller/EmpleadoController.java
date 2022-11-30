@@ -1,14 +1,19 @@
 package shiba.api.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +23,7 @@ import shiba.api.models.EmpleadoModel;
 import shiba.api.services.EmpleadoService;
 
 @RestController
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.PUT,RequestMethod.DELETE})
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.PUT,RequestMethod.DELETE, RequestMethod.POST})
 @RequestMapping("/empleado")
 public class EmpleadoController {
     @Autowired
@@ -34,23 +39,40 @@ public class EmpleadoController {
         return this.empleadoService.guardarEmpleado(empleado);
     }
 
+    @PutMapping(path = "/{id}")
+    public String editarEmpleado(@PathVariable("id") Long id,@RequestBody EmpleadoModel empleado){
+        boolean ok= this.empleadoService.editarEmpleado(id,empleado);
+        if (ok){
+            return "Empleado editado exitosamente " + id;
+        } else{
+            return "Error, no se ha editado empleado id: " + id;
+        }
+    }
     @GetMapping(path = "/{id}")
     public Optional<EmpleadoModel> obtenerPorId(@PathVariable("id") Long id){
         return this.empleadoService.obtenerPorId(id);
     }
 
-    // @GetMapping("/query")
-    // public ArrayList<EmpleadoModel> obtenerPorPrioridad(@RequestParam("prioridad") Integer prioridad){
-    //     return this.empleadoService.obtenerPorPrioridad(prioridad);
-    // }
-
     @DeleteMapping(path="/{id}")
-    public String eliminarPorId(@PathVariable("id") Long id){
+    public Map<String, String> eliminarPorId(@PathVariable("id") Long id){
+        HashMap<String, String> map = new HashMap<>();
         boolean ok= this.empleadoService.eliminarEmpleado(id);
         if (ok){
-            return "Eliminado exitosamente " + id;
+            map.put("message", "Empleado:" + id +" eliminado exitosamente");
+            return map;
         } else{
-            return "Error, no se ha eliminado: " + id;
+            map.put("message", "Error al eliminar");
+            return map;
+
         }
     }
+
+    // @GetMapping
+    // public Map<String, String> MessageJSON(String theMessage) {
+    // HashMap<String, String> map = new HashMap<>();
+    // map.put("message", theMessage);
+    // return map;
+// }
+    
+
 }

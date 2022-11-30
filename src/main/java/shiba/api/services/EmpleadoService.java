@@ -21,6 +21,17 @@ public class EmpleadoService {
     public EmpleadoModel guardarEmpleado(EmpleadoModel empleado){
         return empleadoRepository.save(empleado);
     }
+
+    public boolean editarEmpleado(Long id, EmpleadoModel empleado){
+        empleado.setId(id);
+        try{
+            empleadoRepository.save(empleado);
+            return true;
+        }catch(Exception err){
+            return false;
+        }
+    }
+
     public Optional<EmpleadoModel> obtenerPorId(Long id){
         return empleadoRepository.findById(id);
     }
