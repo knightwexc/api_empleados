@@ -1,6 +1,4 @@
 package shiba.api.models;
-
-import java.sql.Date;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,29 +7,40 @@ public class ProductoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)
-    private Long Id;
-    private Date Fecha;
-    private Integer Cantidad;
-    private Long Id_empleado;
+    private Long id;
+    private String fecha;
+	private String hora;
+    private Integer cantidad;
+    private Long empleado;
 
-    public Date getFecha() {
-		return Fecha;
-	}
-	public void setFecha(Date fecha) {
-		Fecha = fecha;
+	public Long getId() {
+		return id;
 	}
 
-    public Long getId_empleado() {
-		return Id_empleado;
+    public String getFecha() {
+		return fecha;
 	}
-	public void setId_empleado(Long id_empleado) {
-		Id_empleado = id_empleado;
+	public void setFecha(String Fecha) {
+		fecha = Fecha;
+	}
+	public String getHora() {
+		return hora;
+	}
+	public void setHora(String Hora) {
+		hora = Hora;
+	}
+
+    public Long getEmpleado() {
+		return empleado;
+	}
+	public void setEmpleado(Long Empleado) {
+		empleado = Empleado;
 	}
 
     public Integer getCantidad() {
-		return Cantidad;
+		return cantidad;
 	}
-	public void setCantidad(Integer cantidad) {
-		Cantidad = cantidad;
+	public void setCantidad(Integer Cantidad) {
+		cantidad = Cantidad;
 	}
 }
